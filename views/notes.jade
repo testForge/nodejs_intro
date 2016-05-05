@@ -3,11 +3,20 @@ extends layout
 block content
     each note in notes
         p #{note.title}
+        form(name="/notes", method="PUT")
+            div.input
+                span.label Edit note
+                input(type="hidden", name="id", value="#{note.id}")
+                input(type="text", name="title")
+            div.actions
+                input(type="submit", value="Edit")
+
+
 
 
     form(name="/notes", method="POST")
         div.input
-            span.label Node
+            span.label Note
             input(type="text", name="title")
         div.actions
             input(type="submit", value="Create")

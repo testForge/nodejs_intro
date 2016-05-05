@@ -16,13 +16,23 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
     "use strict";
     console.log(req);
-    rest.createNode(req.body, (statusCode, obj) => {
+    rest.createNote(req.body, (statusCode, obj) => {
         "use strict";
         console.log(statusCode);
         console.log(1);
     });
     console.log(req);
 
+});
+
+router.put('/', (req, res) => {
+    "use strict";
+    console.log(req);
+    rest.editNote(req.body, (statusCode, obj) => {
+        console.log(statusCode);
+        console.log(2);
+    });
+    console.log(req);
 })
 
 module.exports = router;

@@ -4,15 +4,13 @@ var querystring = require('querystring');
 
 const host = "private-anon-217accbeb-note10.apiary-mock.com";
 
-const _get = function(options, onResult)
-{
+const _get = function (options, onResult) {
     var prot = options.port == 443 ? https : http;
     options.host = options.host || host;
     options.method = "GET";
     options.headers = {};
 
-    var req = prot.request(options, function(res)
-    {
+    var req = prot.request(options, function (res) {
         var output = '';
         console.log(options.host + ':' + res.statusCode);
         res.setEncoding('utf8');
@@ -21,31 +19,29 @@ const _get = function(options, onResult)
             output += chunk;
         });
 
-        res.on('end', function() {
+        res.on('end', function () {
             var obj = JSON.parse(output);
             onResult(res.statusCode, obj);
         });
     });
 
-    req.on('error', function(err) {
+    req.on('error', function (err) {
         //res.send('error: ' + err.message);
     });
 
     req.end();
 };
 
-const _post = function(options, onResult)
-{
+const _post = function (options, onResult) {
     var prot = options.port == 443 ? https : http;
     options.host = options.host || host;
-    options.method = "POST";
-    options.headers = {
+    options.method = options.method || "POST";
+    options.headers = options.method || {
         "Content-Type": "application/json",
         // "Content-Length": options.body.length
     };
 
-    var req = prot.request(options, function(res)
-    {
+    var req = prot.request(options, function (res) {
         var output = '';
         console.log(options.host + ':' + res.statusCode);
         res.setEncoding('utf8');
@@ -54,18 +50,23 @@ const _post = function(options, onResult)
             output += chunk;
         });
 
-        res.on('end', function() {
+        res.on('end', function () {
             var obj = JSON.parse(output);
             onResult(res.statusCode, obj);
         });
     });
 
-    req.on('error', function(err) {
+    req.on('error', function (err) {
         //res.send('error: ' + err.message);
     });
 
     req.write(querystring.stringify(options.body));
     req.end();
+};
+
+const _put = function (options, onResult) {
+    options.method = 'PUT';
+    _post(options, onResult);
 };
 
 exports.getNotes = (done, err) => {
@@ -74,7 +75,7 @@ exports.getNotes = (done, err) => {
     }, done);
 };
 
-exports.createNode = (body, done, err) => {
+exports.createNote = (body, done, err) => {
     "use strict";
     var options = {};
     options.body = body;
@@ -82,3 +83,12 @@ exports.createNode = (body, done, err) => {
         path: '/notes'
     }, done);
 };
+
+exports.editNote = (body, done, err) =>{
+    "use strict";
+    var options = {};
+    options.body = body;
+    _put({
+        path: `/notes/$(body.id)`
+    }, done);
+}
