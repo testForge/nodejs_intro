@@ -33,6 +33,6 @@ router.put('/', (req, res) => {
         console.log(2);
     });
     console.log(req);
-})
+});
 
 module.exports = router;
