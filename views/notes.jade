@@ -1,0 +1,13 @@
+extends layout
+
+block content
+    each note in notes
+        p #{note.title}
+
+
+    form(name="/notes", method="POST")
+        div.input
+            span.label Node
+            input(type="text", name="title")
+        div.actions
+            input(type="submit", value="Create")
