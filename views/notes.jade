@@ -1,22 +1,25 @@
 extends layout
 
 block content
+    div(id='notes-container', class='notes-container' ng-controller="NoteController as noеeCtrl")
     each note in notes
-        p #{note.title}
-        form(name="/notes", method="PUT")
-            div.input
-                span.label Edit note
-                input(type="hidden", name="id", value="#{note.id}")
-                input(type="text", name="title")
-            div.actions
-                input(type="submit", value="Edit")
+        div(class='single-note')
+            div(class='note-id') #{note.id}
+                button(class='save-node')
+            div(class='note-title')
+                textarea #{note.title}
+            //form(name="/notes", method="PUT")
+            //    div.input
+            //        span.label Edit note
+            //        input(type="hidden", name="id", value="#{note.id}")
+            //        input(type="text", name="title")
+            //    div.actions
+            //        input(type="submit", value="Edit")
 
 
-
-
-    form(name="/notes", method="POST")
-        div.input
-            span.label Note
-            input(type="text", name="title")
+    form(class='create-node', name="/notes", method="POST")
+        span.label Add new node
+        div.note-title
+            textarea(type="text", name="title")
         div.actions
-            input(type="submit", value="Create")
+            input(type="submit", value="Add")

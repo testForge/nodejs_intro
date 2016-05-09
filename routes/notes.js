@@ -9,7 +9,7 @@ var rest = require('../rest');
 router.get('/', (req, res) => {
     rest.getNotes((statusCode, obj) => {
         "use strict";
-        res.render('notes', {notes: obj});
+        res.json({notes: obj});
     });
 });
 

@@ -36,10 +36,10 @@ const _post = function (options, onResult) {
     var prot = options.port == 443 ? https : http;
     options.host = options.host || host;
     options.method = options.method || "POST";
-    options.headers = options.method || {
-        "Content-Type": "application/json",
-        // "Content-Length": options.body.length
-    };
+    options.headers = options.headers || {
+            "Content-Type": "application/json",
+            // "Content-Length": options.body.length
+        };
 
     var req = prot.request(options, function (res) {
         var output = '';
@@ -76,7 +76,6 @@ exports.getNotes = (done, err) => {
 };
 
 exports.createNote = (body, done, err) => {
-    "use strict";
     var options = {};
     options.body = body;
     _post({
@@ -85,10 +84,8 @@ exports.createNote = (body, done, err) => {
 };
 
 exports.editNote = (body, done, err) =>{
-    "use strict";
     var options = {};
     options.body = body;
-    _put({
-        path: `/notes/$(body.id)`
-    }, done);
+    options.host = host + '/notes/' + body.id;
+    _put(options, done);
 }

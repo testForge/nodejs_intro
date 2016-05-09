@@ -1,6 +1,21 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
-  a(href='/notes') Get notes
+  div(ng-controller="NoteController as noteCtrl")
+    h1 Welcome
+    button(ng-click='loadNotes()') Get notes
+
+    div(id='notes-container', class='notes-container')
+      div(class='single-note' ng-repeat="note in notes")
+        div(class='note-id') {{note.id}}
+          button(class='save-node', ng-click='editNote(note)')
+        div(class='note-title')
+          textarea(ng-model='note.title') {{note.title}}
+
+
+      form(class='create-node')
+        span.label Add new node
+        div.note-title
+          textarea(type="text", name="title")
+        div.actions
+          input(type="submit", value="Add")
